@@ -15,7 +15,7 @@ public class Explorer implements Runnable {
 	public Explorer(Map m, Robot r, ControlPanel cp) {
 		stack = new Stack<Position>();
 
-		this.r = r;
+		this.r = Simulator.robot;
 		this.m = m;
 		this.cp = cp;
 		
@@ -61,6 +61,11 @@ public class Explorer implements Runnable {
 				updateSensorFromSimulator();
 				
 				while(count != 0){
+
+					if (cp.getInterval() <= 0) {
+						finished = true;
+						break;
+					}
 					if (reachStart && reachGoal) {
 						if (cp.getInterval() != 0 && cp.getInterval() <= 30) {
 							finished = true;
@@ -69,10 +74,10 @@ public class Explorer implements Runnable {
 						
 						//System.out.println("##Percentage: " + m.checkExplorationState());
 						
-						if (m.checkExplorationState() >= percentage) {
-							finished = true;
-							break;
-						}
+//						if (m.checkExplorationState() >= percentage) {
+//							finished = true;
+//							break;
+//						}
 					}
 					
 					if (r.getPos().getX() == 13 && r.getPos().getY() == 1) {
@@ -81,19 +86,24 @@ public class Explorer implements Runnable {
 					
 					if (r.getPos().getX() == 1 && r.getPos().getY() == 18) {
 						if (reachStart && reachGoal) {	//reach start point again
-/*							int[] position = m.getOneUnexploredBlock();
+							int[] position = m.getOneUnexploredBlock();
 							while(position != null) {
 								System.out.println("#position: " +position[0] + "  "+position[1]);
-								AStar a = new AStar(Config.m,r,new Position(position[0],position[1],Direction.NORTH),cp);
-								if(a.compute_shortest_path())
-									new Thread(a).start();
+								AStar a = new AStar(m,r,new Position(position[0],position[1],Direction.NORTH),cp);
+								a.myExplorer = this;
+								if(a.compute_shortest_path()) {
+									position = m.getOneUnexploredBlock();
+								}
+								
 								else {
 									m.setLocInfo(position[0], position[1], 2);
 									position = m.getOneUnexploredBlock();
-									System.out.println("#position: " +position[0] + "  "+position[1]);
-							    }
 									
-							}*/
+							    }
+								//System.out.println("&&" + r.getPos().getX() + "," +r.getPos().getY()  );
+							}
+							AStar a = new AStar(m,r,new Position(1,18,Direction.SOUTH),cp);
+							a.compute_shortest_path();
 							finished = true;
 							break;
 						}
@@ -147,9 +157,9 @@ public class Explorer implements Runnable {
 			}	//else
 		}	//while(!reachGoal || !reachStart){
 		
-		System.out.println("Start shortest path back to start point!");
-		AStar a = new AStar(Simulator.boardPanel.getMap(),r,new Position(1,18,Direction.NORTH), cp);
-		a.compute_shortest_path();
+//		System.out.println("Start shortest path back to start point!");
+//		AStar a = new AStar(Simulator.boardPanel.getMap(),r,new Position(1,18,Direction.NORTH), cp);
+//		a.compute_shortest_path();
 		
 		System.out.println("Exploration end!");
 		System.out.println("Total steps: " + noOfMovement);

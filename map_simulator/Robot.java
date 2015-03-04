@@ -30,7 +30,7 @@ public class Robot {
 		} 
 		else {
 			this.direction = Direction.WEST;
-			this.pos = new Position(7, 10, this.direction);
+			this.pos = new Position(7, 12, this.direction);
 		}		
 		//this.pos = new Position(1, 18, this.direction);
 		//shortest path

@@ -70,7 +70,7 @@ public class ClientController extends Observable{
 					if(reader.ready()){
 						newMessage = this.reader.readLine();
 						System.out.println(newMessage);
-						notfityRobot(newMessage);
+						//notfityRobot(newMessage);
 					}
 				} catch (Exception e){
 					System.err.println("This is the error: "+e);

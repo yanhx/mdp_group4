@@ -2,7 +2,7 @@ package map_simulator;
 
 public class Config {
 	//Simulator
-	public final static boolean SIMULATOR = true; // simulated or real run
+	public final static boolean SIMULATOR = false; // simulated or real run
 	public static Map m = new Map();
 	public final static boolean SHORTESTPATH_SIMULATOR = false;
 	

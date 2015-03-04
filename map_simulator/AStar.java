@@ -18,6 +18,7 @@ public class AStar implements Runnable {
 	private Direction direction, finalDirection;
 	private final static int ARENA_WIDTH = 15;
 	private final static int ARENA_LENGTH = 20;
+	public Explorer myExplorer;
 
 	public AStar(Map map, Robot robot, Position target, ControlPanel cp) {
 		// initialize multiarray of cells
@@ -29,6 +30,7 @@ public class AStar implements Runnable {
 		}
 		this.robot = robot;
 		this.target = getCell(target.getX(), target.getY());
+
 		this.source = getCell(robot.getPos().getX(), robot.getPos().getY());
 		this.source.setH(compute_heuristic(source));
 		this.source.setF(source.getG() + source.getH());
@@ -45,13 +47,26 @@ public class AStar implements Runnable {
 				new CellComparator());
 		Set<Cell> closeList = new HashSet<Cell>();
 		pQueue.add(source);
+		int minF = 100000;
+		Cell minC = target;
+		int count = 5;
 
 		while (pQueue.size() > 0) {
 			Cell curr = pQueue.poll();
 			closeList.add(curr);
-
+		//	System.out.println("curr: " + curr.getX()+"," + curr.getY() +","+ curr.getH());
+			if(curr.getH() < minF) {
+//				System.out.println("minF: " + minF);
+				minF = curr.getH();
+				minC = curr;
+			}
 			if (curr.equals(target)) {
-				break;
+				count--;
+				if(count<=0){
+					minC = target;
+					break;
+				}
+
 			}
 			// get adjacent cells
 			ArrayList<Cell> neighbors = get_neighbors(curr);
@@ -71,7 +86,8 @@ public class AStar implements Runnable {
 		}
 
 		// retrieve the cells for shortest path
-		path = retrieve_shortest_path(target);
+		path = retrieve_shortest_path(minC);
+		System.out.println("minC:" + minC.getX() + ", " + minC.getY());
 		if(path == null)
 			return false;
 
@@ -172,6 +188,9 @@ public class AStar implements Runnable {
 					robot.turnRight();
 					break;
 				}
+				if(myExplorer != null) {
+					myExplorer.updateSensorFromSimulator();
+				}
 				Simulator.boardPanel.repaint();
 				try {
 					Thread.sleep(cp.getspeed());
@@ -185,39 +204,84 @@ public class AStar implements Runnable {
 	public ArrayList<String> convert_path_into_instruction(ArrayList<Cell> path) {
 		ArrayList<String> instruction_list = new ArrayList<String>();
 
-		for (int i = 0; i < path.size(); i++) {
-			Cell next = path.get(i);
-			String instruction = "";
-			
-			int movingDir = (next.getX() - robot.getPos().getX()) * 2 + next.getY() - robot.getPos().getY();
-			int currDir = dirToInt(robot.getDirection());
-			
-			if(movingDir + currDir == 0) {
-				robot.turn180();
-				instruction = Config.MOVEMENT_TURN_BACK;
-			}
-			else if (movingDir == currDir) {
-				robot.goForward();
-				instruction = Config.MOVEMENT_GO_STRAIGHT;
-			}
-			else if((currDir % 2 == 1 && Math.abs(currDir - movingDir) == 1) ||(currDir % 2 == 0 && Math.abs(currDir - movingDir) == 3)) {
-				robot.turnLeft();
-				instruction = Config.MOVEMENT_TURN_LEFT;
-			}
-			else {
-				robot.turnRight();
-				instruction = Config.MOVEMENT_TURN_RIGHT;
-			}
-				
-			if (!instruction.equals(Config.MOVEMENT_GO_STRAIGHT)) {
-				instruction_list.add(instruction);
-				robot.goForward();
-				instruction_list.add(Config.MOVEMENT_GO_STRAIGHT);
-			} else {
-				instruction_list.add(instruction);
-			}
-		}
-
+		        for(int i = 0; i < path.size(); i++){
+		            Cell next = path.get(i);
+		            String instruction = "";
+		             
+		            //robot moving towards East
+		            if(next.getX() > robot.getPos().getX()){
+		                switch(robot.getDirection()){
+		                //if robot facing north, turn 90 degrees clockwise to east
+		                case NORTH: robot.turnRight(); instruction = Config.MOVEMENT_TURN_RIGHT;
+		                        break;
+		                //if robot facing west, turn 90 degrees clockwise to north and then east
+		                case WEST: robot.turn180(); instruction = Config.MOVEMENT_TURN_BACK;
+		                        break;
+		                //if robot facing south, turn 90 degrees anticlockwise to east
+		                case SOUTH: robot.turnLeft(); instruction = Config.MOVEMENT_TURN_LEFT;
+		                        break;
+		                default: robot.goForward(); instruction = Config.MOVEMENT_GO_STRAIGHT;
+		                    break;
+		                }
+		            }
+		             
+		            //robot moving towards West
+		            else if(robot.getPos().getX() > next.getX()){
+		                switch(robot.getDirection()){
+		                //if robot facing north, turn 90 degrees anticlockwise to west
+		                case NORTH: robot.turnLeft(); instruction = Config.MOVEMENT_TURN_LEFT;
+		                        break;
+		                //if robot facing east, turn 90 degrees clockwise to south and then west
+		                case EAST: robot.turn180(); instruction = Config.MOVEMENT_TURN_BACK;
+		                        break;
+		                //if robot facing south, turn 90 degrees clockwise to west
+		                case SOUTH: robot.turnRight(); instruction = Config.MOVEMENT_TURN_RIGHT;
+		                        break;
+		                default: robot.goForward(); instruction = Config.MOVEMENT_GO_STRAIGHT;
+		                    break;
+		                }
+		            }
+		            //robot moving towards North
+		            else if(robot.getPos().getY() > next.getY()){
+		                switch(robot.getDirection()){
+		                //if robot facing west, turn 90 degrees clockwise to north
+		                case WEST: robot.turnRight(); instruction = Config.MOVEMENT_TURN_RIGHT;
+		                        break;
+		                //if robot facing east, turn 90 degrees anticlockwise to north
+		                case EAST: robot.turnLeft(); instruction = Config.MOVEMENT_TURN_LEFT;
+		                        break;
+		                //if robot facing south, turn 90 degrees clockwise to west then to north
+		                case SOUTH: robot.turn180(); instruction = Config.MOVEMENT_TURN_BACK;
+		                        break;
+		                default:robot.goForward(); instruction = Config.MOVEMENT_GO_STRAIGHT;
+		                        break;
+		                }
+		            }
+		            //robot moving towards South
+		            else if(robot.getPos().getY() < next.getY()){
+		                switch(robot.getDirection()){
+		                //if robot facing west, turn 90 degrees anticlockwise to south
+		                case WEST: robot.turnLeft(); instruction = Config.MOVEMENT_TURN_LEFT;
+		                        break;
+		                //if robot facing east, turn 90 degrees clockwise to south
+		                case EAST: robot.turnRight(); instruction = Config.MOVEMENT_TURN_RIGHT;
+		                        break;
+		                //if robot facing north, turn 90 degrees clockwise to east then to south
+		                case NORTH: robot.turn180(); instruction = Config.MOVEMENT_TURN_BACK;
+		                        break;
+		                default: robot.goForward(); instruction = Config.MOVEMENT_GO_STRAIGHT;
+		                    break;
+		                } 
+		            }
+		            if(!instruction.equals(Config.MOVEMENT_GO_STRAIGHT)){
+		                instruction_list.add(instruction);
+		                robot.goForward();
+		                instruction_list.add(Config.MOVEMENT_GO_STRAIGHT);
+		            }
+		            else{
+		                instruction_list.add(instruction);
+		            }
+		        }
 		String lastInstruction = directionInstruction(finalDirection,
 				robot.getDirection());
 		System.out.println("This is the target direction: " + finalDirection);
@@ -297,6 +361,9 @@ public class AStar implements Runnable {
 			curr = curr.getParent();
 		}
 		Collections.reverse(shortestPath);
+//		for(Cell cell : shortestPath) {
+//			System.out.println(cell.getX() + " " + cell.getY());
+//		}
 		return shortestPath;
 	}
 
@@ -319,8 +386,10 @@ public class AStar implements Runnable {
 	}
 
 	public int compute_heuristic(Cell cell) {
-		return 10 * (Math.abs(cell.getX() - target.getX()) + Math.abs(cell
-				.getY() - target.getY()));
+//		return 10 * (Math.abs(cell.getX() - target.getX()) + Math.abs(cell
+//				.getY() - target.getY()));
+		return  (int) (10 *Math.sqrt( Math.abs(cell.getX() - target.getX()) *Math.abs(cell.getX() - target.getX()) + 
+		Math.abs(cell.getY() - target.getY()) * Math.abs(cell.getY() - target.getY())));
 	}
 	
 	public int dirToInt(Direction dir) {

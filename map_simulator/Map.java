@@ -241,25 +241,23 @@ public class Map {
 	public void convertUnexploredToClear() {
 		int temp = 0;
 		
-		if (countObstacle() != 23) {
-			temp = 23 - countObstacle();
+		if (countObstacle() >= 23) {
+			temp = countObstacle()-23;
 			
-			if (temp == countUnexplored()) {
 				for (int y = 0; y < 20; y++) {
 					for (int x = 0; x < 15; x++) {
 						if (Map[x][y] == 0 || Map[x][y] == 3) {
-							Map[x][y] = 2;
+							Map[x][y] = 1;
 						}
 					}
 				}
 				return;
-			}
 		}
 		
 		for (int y = 0; y < 20; y++) {
 			for (int x = 0; x < 15; x++) {
 				if (Map[x][y] == 0 || Map[x][y] == 3) {
-					Map[x][y] = 1;
+					Map[x][y] = 2;
 				}
 			}
 		}
