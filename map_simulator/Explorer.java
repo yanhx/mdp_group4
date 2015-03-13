@@ -74,10 +74,10 @@ public class Explorer implements Runnable {
 						
 						//System.out.println("##Percentage: " + m.checkExplorationState());
 						
-//						if (m.checkExplorationState() >= percentage) {
-//							finished = true;
-//							break;
-//						}
+						if (m.checkExplorationState() >= percentage) {
+							finished = true;
+							break;
+						}
 					}
 					
 					if (r.getPos().getX() == 13 && r.getPos().getY() == 1) {
@@ -164,10 +164,15 @@ public class Explorer implements Runnable {
 		System.out.println("Exploration end!");
 		System.out.println("Total steps: " + noOfMovement);
 		cp.stopTimer();
+
 			
 		Config.m.copyMap(m.getMap());
 		m.convertUnexploredToClear();
 		Simulator.boardPanel.repaint();
+		if(r.getPos().getX() != 1 || r.getPos().getY() != 18) {
+		    AStar a = new AStar(m,r,new Position(1,18,Direction.SOUTH),cp);
+		    a.compute_shortest_path();
+		}
 		
 		//print map descriptor
 		md = new MapDescriptor();
@@ -258,43 +263,47 @@ public class Explorer implements Runnable {
 					//terminating condition: if the robot reaches the start after reached goal, the robot exploration will terminate and do parking				
 					//normal case
 					if (r.getPos().getX() == 1 && r.getPos().getY() == 18) {
-						if (reachGoal) {	//reach start point again
-							finished = true;
-							robotParkingAtStart();
-							break;
-						}
 						reachStart = true;
 						robotParkingAtStart();
 					}					
 					//robot shift 1 block to North
 					else if (r.getPos().getX() == 1 && r.getPos().getY() == 17 && (m.getLocInfo(0, 19) == 2 || m.getLocInfo(1, 19) == 2 || m.getLocInfo(2, 19) == 2)) {
-						if (reachGoal) {
-							finished = true;
-							robotParkingAtStart();
-							break;
-						}
 						reachStart = true;
 						robotParkingAtStart();
 					}
 					//robot shift 1 block to East
 					else if (r.getPos().getX() == 2 && r.getPos().getY() == 18 && (m.getLocInfo(0, 17) == 2 || m.getLocInfo(0, 18) == 2 || m.getLocInfo(0, 19) == 2)) {
-						if (reachGoal) {
-							finished = true;
-							robotParkingAtStart();
-							break;
-						}
 						reachStart = true;
 						robotParkingAtStart();
 					}					
 					//robot shift 1 block to North and 1 block to East
 					else if (r.getPos().getX() == 2 && r.getPos().getY() == 17 && (m.getLocInfo(0, 17) == 2 || m.getLocInfo(0, 18) == 2) && (m.getLocInfo(1, 19) == 2 || m.getLocInfo(2, 19) == 2)) {
-						if (reachGoal) {
-							finished = true;
-							robotParkingAtStart();
-							break;
-						}
 						reachStart = true;
 						robotParkingAtStart();
+					}
+					
+					if (reachStart && reachGoal) {	//reach start point again
+						int[] position = m.getOneUnexploredBlock();
+						while(position != null) {
+							System.out.println("#position: " +position[0] + "  "+position[1]);
+							AStar a = new AStar(m,r,new Position(position[0],position[1],Direction.NORTH),cp);
+							a.myExplorer = this;
+							if(a.compute_shortest_path()) {
+								position = m.getOneUnexploredBlock();
+							}
+							
+							else {
+								m.setLocInfo(position[0], position[1], 2);
+								position = m.getOneUnexploredBlock();
+								
+						    }
+							//System.out.println("&&" + r.getPos().getX() + "," +r.getPos().getY()  );
+						}
+						AStar a = new AStar(m,r,new Position(1,18,Direction.SOUTH),cp);
+						a.compute_shortest_path();
+						robotParkingAtStart();
+						finished = true;
+						break;
 					}
 					
 					//special terminating condition: if the time less than 30 second with start and goal explored,
@@ -685,7 +694,19 @@ public class Explorer implements Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 		if (!Config.SIMULATOR) {
-			startExplorerPath();
+			//startExplorerPath();
+			Client.pauseThreadListening();
+			r.goForward();
+			//updateSensorFromRobot();
+			r.turnLeft();
+			//updateSensorFromRobot();
+			r.turnRight();
+			//updateSensorFromRobot();
+			//calibrateFront();
+			//updateSensorFromRobot();
+			//calibrateSide();
+			//updateSensorFromRobot();
+			Client.resumeThreadListening();
 		} 
 		else {
 			startSimulatedExplorerPath();

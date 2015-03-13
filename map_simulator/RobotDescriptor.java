@@ -16,14 +16,16 @@ public class RobotDescriptor {
 		
 		//padding
 		code = "0" + code;
-//		System.out.println(code);
+		//System.out.println(code);
 		
-		for (int i = 0; i < code.length(); i += 7){
-//			System.out.println(code.substring(i, i+7));
-			nextChar = (char)Integer.parseInt(code.substring(i, i+7), 2);
-			asciiCode += nextChar;
-		}
-		return asciiCode;
+		return code;
+				
+//		for (int i = 0; i < code.length(); i += 7){
+////			System.out.println(code.substring(i, i+7));
+//			nextChar = (char)Integer.parseInt(code.substring(i, i+7), 2);
+//			asciiCode += nextChar;
+//		}
+//		return asciiCode;
 	}
 	
 	public static String convertDistance(int distance){

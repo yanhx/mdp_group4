@@ -20,7 +20,7 @@ public class ClientController extends Observable{
 	private boolean pauseThreadListening;
 	
 	public ClientController(Socket skt) throws IOException{	
-		this.reader = new BufferedReader(new InputStreamReader(skt.getInputStream()));;
+		this.reader = new BufferedReader(new InputStreamReader(skt.getInputStream()));
 		this.command = "";
 		this.ps = new PrintWriter(skt.getOutputStream(),true);
 	//	this.reader.ready();
@@ -64,13 +64,18 @@ public class ClientController extends Observable{
 	public void start() {
 		String newMessage = new String();
 		// TODO Auto-generated method stub
+		System.out.println("test exploration!");
+		notfityRobot("Explore");
+		
 		while(true) {
 			while(!pauseThreadListening){
 				try{
 					if(reader.ready()){
 						newMessage = this.reader.readLine();
 						System.out.println(newMessage);
-						//notfityRobot(newMessage);
+						notfityRobot(newMessage);
+
+					
 					}
 				} catch (Exception e){
 					System.err.println("This is the error: "+e);
