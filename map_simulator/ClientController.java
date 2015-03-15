@@ -64,6 +64,12 @@ public class ClientController extends Observable{
 	public void start() {
 		String newMessage = new String();
 		// TODO Auto-generated method stub
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		System.out.println("test exploration!");
 		notfityRobot("Explore");
 		

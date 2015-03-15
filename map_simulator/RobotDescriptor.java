@@ -15,7 +15,7 @@ public class RobotDescriptor {
 		char nextChar;
 		
 		//padding
-		code = "0" + code;
+		//code = "0" + code;
 		//System.out.println(code);
 		
 		return code;
@@ -35,7 +35,7 @@ public class RobotDescriptor {
 			dist = "0" + dist;
 		}
 		
-		dist = "0" + dist;
+		//dist = "0" + dist;
 		return dist;
 	}
 	

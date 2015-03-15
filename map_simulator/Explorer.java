@@ -373,6 +373,7 @@ public class Explorer implements Runnable {
 	}
 
 	public void updateSensorFromRobot(){
+		int test = 1;
 		String sensorData = "";	
 		
 		BufferedReader reader = Client.getBufferedReader();
@@ -385,9 +386,11 @@ public class Explorer implements Runnable {
 			}
 			System.out.println();
 			System.out.println("Received: " + sensorData);
-			sensorData = RobotDescriptor.convertSensors(Integer.parseInt(sensorData));
+		//	sensorData = RobotDescriptor.convertSensors(Integer.parseInt(sensorData));
 		} catch (Exception e) {
 			System.out.println("We are screwed.");
+			e.printStackTrace();
+			if(test==1)return;
 			//print map descriptor
 			System.out.println("-----Map Descriptor-----");
 			System.out.println("String P1: " + md.encodeExploredUnexplored(m.getMap()));
@@ -396,6 +399,8 @@ public class Explorer implements Runnable {
 			cp.setString2(md.encodeObstacle(m.getMap()));
 			e.printStackTrace();
 		}
+		if(test==1)
+			return;
 		
 		int[] SensorDataForShort = new int[4];
 		int[] SensorDataForLeftLong = {1,1,1};
@@ -697,11 +702,11 @@ public class Explorer implements Runnable {
 			//startExplorerPath();
 			Client.pauseThreadListening();
 			r.goForward();
-			//updateSensorFromRobot();
+			updateSensorFromRobot();
 			r.turnLeft();
-			//updateSensorFromRobot();
+			updateSensorFromRobot();
 			r.turnRight();
-			//updateSensorFromRobot();
+			updateSensorFromRobot();
 			//calibrateFront();
 			//updateSensorFromRobot();
 			//calibrateSide();
