@@ -1,0 +1,127 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_margin="10dp" >
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal" >
+
+        <Spinner
+            android:id="@+id/mode"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:entries="@array/robot_mode" />
+        
+        <ToggleButton
+            android:id="@+id/update_toggle"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:textOn="Auto"
+            android:textOff="Manual" />
+        
+        <Button
+            android:id="@+id/update_button"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:enabled="false"
+            android:text="Update" />
+        
+        <ToggleButton
+            android:id="@+id/change_camera_view"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:textOn="Normal"
+            android:textOff="FPV" />
+        
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:orientation="horizontal" >
+        
+        <Button
+            android:id="@+id/func_button1"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:layout_marginRight="20dp"
+            android:text="F1" />
+        
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:textAllCaps="true"
+            android:background="#FF0000"
+            android:textColor="#000000"
+            android:text="stopped"
+            android:textSize="30sp"
+            android:layout_margin="10dp" />
+        
+        <Button
+            android:id="@+id/func_button2"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:layout_marginLeft="20dp"
+            android:text="F2" />
+        
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal" >
+        
+        <Button
+            android:id="@+id/control_start"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="3"
+            android:text="Start" />
+        
+        <Button
+            android:id="@+id/control_left"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="2"
+            android:text="Left" />
+        
+        <Button
+            android:id="@+id/control_forward"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="2"
+            android:text="Forward" />
+        
+        <Button
+            android:id="@+id/control_right"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="2"
+            android:text="Right" />
+        
+        <Button
+            android:id="@+id/control_stop"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="3"
+            android:text="Stop" />
+        
+    </LinearLayout>
+
+</LinearLayout>

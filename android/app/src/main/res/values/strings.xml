@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MDP</string>
+    <string name="list_title">List of Bluetooth devices</string>
+    <string name="action_refresh">Refresh</string>
+	<string name="action_robot_activity">Robot activity</string>    
+	<string name="send_button">Send</string>
+	<string name="entering_field_hint">Enter your message</string>
+    <string-array name="robot_mode">
+       <item>Explore</item>
+       <item>Speedrun</item>
+    </string-array>
+	
+</resources>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="C:\Users\Khue\Desktop\NTU_AY14_15_2\CZ3004\LAB\ntu-mdp-gr18\MDP2\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\19.1.0\classes.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="3499ceba05ca1f6037c6a2fad73df8f636224a28">
+        <dex dex="C:\Users\Khue\Desktop\NTU_AY14_15_2\CZ3004\LAB\ntu-mdp-gr18\MDP2\app\build\intermediates\pre-dexed\debug\classes-81646aaece8f5d0a094eb45522ebf396f5491d9f.jar" />
+    </item>
+    <item
+        jar="C:\Users\Khue\Desktop\CODE ALGORITHM\Android\adt-bundle-windows-x86_64\sdk\extras\android\m2repository\com\android\support\support-v4\19.1.0\support-v4-19.1.0.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67">
+        <dex dex="C:\Users\Khue\Desktop\NTU_AY14_15_2\CZ3004\LAB\ntu-mdp-gr18\MDP2\app\build\intermediates\pre-dexed\debug\support-v4-19.1.0-aefde69854846d7f4f550dfd0baa684643b9fc4b.jar" />
+    </item>
+
+</items>

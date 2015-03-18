@@ -1,0 +1,8 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item 
+        android:id="@+id/configure" 
+        android:title="Configure buttons" 
+        android:titleCondensed="Config"> 
+    </item>
+
+</menu><!-- From: file:/home/cvghm/Desktop/NODEJS/3004/MDP/app/src/main/res/menu/robot_activity_menu.xml -->
